@@ -1,0 +1,11 @@
+body {
+  text-align: center;
+}
+canvas {
+  border: 5px solid black;
+}
+p {
+  text-align: left;
+  position: absolute;
+  top: 120px;
+}
