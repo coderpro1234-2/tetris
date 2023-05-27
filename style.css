@@ -1,5 +1,11 @@
+@font-face {
+  font-family: Font1;
+  src: url(assets/font/font.ttf);
+}
 body {
   text-align: center;
+  overflow: hidden;
+  font-family: Font1;
 }
 canvas {
   border: 5px solid black;
@@ -8,4 +14,20 @@ p {
   text-align: left;
   position: absolute;
   top: 120px;
+  left: 5px;
+}
+h2 {
+  position: relative;
+  bottom: 365px;
+  left: 125px
+}
+label {
+  position: absolute;
+  top: 0;
+  left: 14px;
+}
+#next {
+  position: relative;
+  bottom: 220px;
+  left: 12px
 }
