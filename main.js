@@ -2,12 +2,15 @@ var canvas = document.getElementById("game")
 var ctx = canvas.getContext("2d")
 var canvas2 = document.getElementById("next")
 var ctx2 = canvas2.getContext("2d")
+var canvas3 = document.getElementById("store")
+var ctx3 = canvas3.getContext("2d")
 var defurl = 'https://coderpro1234-2.github.io'
 var fx = 0
 var fy = 0
 var nxtt = 0
 var musicplay = 0
 var timer = 0
+var useswap = false
 const gblocks = [
   0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,
@@ -36,6 +39,7 @@ fblock = [
 0,0,0,0,
 0,0,0,0
 ]
+sblock = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 const tetrominoes = [
   [0,5,0,0,0,5,0,0,0,5,0,0,0,5,0,0],
   [0,0,0,0,0,3,3,0,0,3,3,0,0,0,0,0],
@@ -118,6 +122,25 @@ function draw_next() {
     i ++
   }
 }
+function draw_store() {
+  ctx3.clearRect(0, 0, canvas.width, canvas.height)
+  count = 0
+  a = 0
+  b = 0
+  i = 0
+  while (i < 4) {
+    b = 0
+    i2 = 0
+    while (i2 < 4) {
+      ctx3.drawImage(gettileid(sblock[count]),b,a,20,20)
+      count++
+      b += 20
+      i2 ++
+    }
+    a += 20
+    i ++
+  }
+}
 function g_xy(x, y) {
   if (y > 19 || x < 0 || x > 9) {
     return(1)
@@ -175,7 +198,11 @@ function r_cc() {
   r_c()
   r_c()
 }
-function set_f() {
+function set_f(t = false) {
+  useswap = false
+  if (t) {
+    set_f(true)
+  }
   fx = randnumber(0,6) 
   fy = 0
   fblock = tetrominoes[nxtt]
@@ -187,6 +214,7 @@ function set_f() {
   if (f_coll_g()) {
     alert("You Died")
     window.location.reload()
+    set_f(true)
   }
 }
 function check_line() {
@@ -212,6 +240,7 @@ function update_screen() {
   draw_gblocks()
   draw_fblock()
   draw_next()
+  draw_store()
 }
 function mglt() {
   fy += 1
@@ -257,7 +286,16 @@ window.onload = function(){
       }
     }
     if (event.key == "ArrowUp" || event.key == "w") {
-
+      tf = false
+      while (!tf) {
+        fy += 1
+        if (f_coll_g()) {
+          tf = true
+        }
+      }
+      fy -= 1
+      add_f_to_g()
+      set_f()
     }
     if (event.key == "x") {
       r_c()
@@ -269,6 +307,37 @@ window.onload = function(){
       r_cc()
       if (f_coll_g()) {
         r_c()
+      }
+    }
+    if (event.key == "q") {
+      i = 0
+      e = 0
+      while (i < 16) {
+        if (sblock[i] != 0) {
+          e += 1
+        }
+        i++
+      }
+      if (e == 0) {
+        sblock = fblock
+        set_f()
+        useswap = true
+      }
+    }
+    if (event.key == "e") {
+      i = 0
+      e = 0
+      while (i < 16) {
+        if (sblock[i] != 0) {
+          e += 1
+        }
+        i++
+      }
+      if (e != 0 && (!useswap)) {
+        tmp = sblock
+        sblock = fblock
+        fblock = tmp
+        useswap = true
       }
     }
     update_screen()
