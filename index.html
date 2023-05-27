@@ -6,13 +6,14 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <button class="defbutton" onclick="window.location.href = defurl+'main/'" style="position: absolute; top: 10px; right: 10px; padding: 4px;">Home</button>
+    <button class="defbutton" onclick="window.location.href = defurl+'/main'" style="position: absolute; top: 10px; right: 10px; padding: 4px;">Home</button>
     <input style="position: absolute; top: 20px; left: 20px;" type="image" src="assets/images/disk.png" id="musicdisk" onclick="checkmusic();">
-    <label style=" position: absolute; top: 0; left: 16px;">&#8192&#8192Music?</label>
+    <label>&#8192&#8192Music?</label>
     <audio id="tetrismusic" loop>
       <source src="assets/music/track1.mp3" type="audio/mpeg">
     </audio>
-    <p>Instrunctions:
+    <p>
+      Instrunctions:
       <br>Up Arrow / W to snap block to bottom
       <br>Left or Right Arrows / A or D to move block left or right
       <br>Down Arrow / S to move block one tile down.
@@ -34,7 +35,8 @@
       <img id="tile8" src="assets/images/tile8.png">
     </div>
     <canvas width="200" height="400" id="game"></canvas>
-    <canvas width="200" height="400" id="next" hidden></canvas>
+    <canvas width="80" height="80" id="next"></canvas>
+    <h2>Next:</h2>
   </body>
   <script src="main.js"></script>
 </html>
