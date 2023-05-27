@@ -10,24 +10,48 @@ body {
 canvas {
   border: 5px solid black;
 }
-p {
+.instructions {
   text-align: left;
   position: absolute;
   top: 120px;
   left: 5px;
 }
-h2 {
-  position: relative;
-  bottom: 365px;
-  left: 125px
-}
-label {
+.musiclabel {
   position: absolute;
   top: 0;
   left: 14px;
 }
+.disable-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.nexttext {
+  position: relative;
+  bottom: 285px;
+  left: 77px
+}
+.storetext {
+  position: relative;
+  bottom: 470px;
+  left: 77px
+}
+.homebutton {
+  font-family: Font1;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px;
+}
 #next {
   position: relative;
-  bottom: 220px;
+  bottom: 140px;
   left: 12px
+}
+#store {
+  position: relative;
+  bottom: 280px;
+  right: 87px
 }
