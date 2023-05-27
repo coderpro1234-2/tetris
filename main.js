@@ -2,7 +2,7 @@ var canvas = document.getElementById("game")
 var ctx = canvas.getContext("2d")
 var canvas2 = document.getElementById("next")
 var ctx2 = canvas2.getContext("2d")
-var defurl = 'https://coderporo1234-2.github.io'
+var defurl = 'https://coderpro1234-2.github.io'
 var fx = 0
 var fy = 0
 var nxtt = 0
@@ -31,10 +31,10 @@ const gblocks = [
   0,0,0,0,0,0,0,0,0,0
 ]
 fblock = [
-0,5,0,0,
-0,5,0,0,
-0,5,0,0,
-0,5,0,0
+0,0,0,0,
+0,0,0,0,
+0,0,0,0,
+0,0,0,0
 ]
 const tetrominoes = [
   [0,5,0,0,0,5,0,0,0,5,0,0,0,5,0,0],
@@ -42,8 +42,8 @@ const tetrominoes = [
   [0,0,0,0,0,4,4,0,4,4,0,0,0,0,0,0],
   [0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0],
   [0,0,0,0,0,2,0,0,0,2,0,0,0,2,2,0],
-  [0,0,0,0,0,0,7,0,0,0,7,0,0,7,7,0],
-  [0,0,0,0,6,6,6,0,0,6,0,0,0,0,0,0]
+  [0,0,0,0,0,0,6,0,0,0,6,0,0,6,6,0],
+  [0,0,0,0,7,7,7,0,0,7,0,0,0,0,0,0]
 ]
 function randnumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -117,8 +117,6 @@ function draw_next() {
     a += 20
     i ++
   }
-  c = canvas.toDataURL()
-  icon.href = c
 }
 function g_xy(x, y) {
   if (y > 19 || x < 0 || x > 9) {
@@ -213,7 +211,7 @@ function update_screen() {
   check_line()
   draw_gblocks()
   draw_fblock()
-  //draw_next()
+  draw_next()
 }
 function mglt() {
   fy += 1
