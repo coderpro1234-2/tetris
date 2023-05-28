@@ -12,6 +12,13 @@ body {
 canvas {
   border: 5px solid white;
 }
+button {
+  font-family: Font1;
+  background-color: gray;
+  border: 2px solid white;
+  border-radius: 5px;
+  color: white;
+}
 .instructions {
   text-align: left;
   position: absolute;
@@ -41,11 +48,7 @@ canvas {
   left: 77px
 }
 .homebutton {
-  font-family: Font1;
-  background-color: gray;
-  border: 2px solid white;
-  border-radius: 5px;
-  color: white;
+
   position: absolute;
   top: 10px;
   right: 10px;
