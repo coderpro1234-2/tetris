@@ -12,6 +12,7 @@ var musicplay = 0
 var timer = 0
 var useswap = false
 var running = true
+var instout = false
 const gblocks = [
   0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,
@@ -212,6 +213,16 @@ function you_died() {
     }
   },100)
   
+}
+function swapinst() {
+  instout = !instout
+  txt = "Instrunctions:<br>Up Arrow / W to snap block to bottom.<br>Left or Right Arrows / A or D to move block left or right.<br>Down Arrow / S to move block one tile down.<br> X to rotate block clockwise.<br>Z to rotate block counter-clockwise.<br>Q to save block to store if it is empty.<br>E to swap block from store if it exists."
+  if (instout) {
+    document.getElementById("instructions").innerHTML = txt
+  }
+  else {
+    document.getElementById("instructions").innerHTML = ""
+  }
 }
 function r_c() {
   const tmp = []
