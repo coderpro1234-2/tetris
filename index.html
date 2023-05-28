@@ -12,16 +12,8 @@
     <audio id="tetrismusic" loop>
       <source src="assets/music/track1.mp3" type="audio/mpeg">
     </audio>
-    <p class="instructions">
-      Instrunctions:
-      <br>Up Arrow / W to snap block to bottom.
-      <br>Left or Right Arrows / A or D to move block left or right.
-      <br>Down Arrow / S to move block one tile down.
-      <br> X to rotate block clockwise.
-      <br>Z to rotate block counter-clockwise.
-      <br>Q to save block to store if it is empty.
-      <br>E to swap block from store if it exists.
-    </p>
+    <button onclick="swapinst()" class="instructions" style="top: 110px; height: 25px;">Instructions?</button>
+    <p class="instructions" id="instructions"></p>
     <img src="assets/images/title.png" width="206" height="155">
     <br>
     <br>
