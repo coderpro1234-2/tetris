@@ -11,6 +11,7 @@ var nxtt = 0
 var musicplay = 0
 var timer = 0
 var useswap = false
+var running = true
 const gblocks = [
   0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,
@@ -180,6 +181,38 @@ function add_f_to_g() {
     i ++
   }
 }
+function sro(off, color) {
+  gblocks[0+(off*10)] = color
+  gblocks[1+(off*10)] = color
+  gblocks[2+(off*10)] = color
+  gblocks[3+(off*10)] = color
+  gblocks[4+(off*10)] = color
+  gblocks[5+(off*10)] = color
+  gblocks[6+(off*10)] = color
+  gblocks[7+(off*10)] = color
+  gblocks[8+(off*10)] = color
+  gblocks[9+(off*10)] = color
+  draw_gblocks()
+}
+function you_died() {
+  c1 = 0
+  c2 = 0
+  setInterval(function(){
+    sro(c1,c2+1)
+    c1 += 1
+    c2 += 1
+    c2 = c2 % 7
+    if (c1 == 20) {
+      c1 = 0
+      c2 = 0
+      setTimeout(function(){
+        window.location.reload()
+      set_f(true)
+      }, 400)
+    }
+  },100)
+  
+}
 function r_c() {
   const tmp = []
   i = 0
@@ -203,7 +236,7 @@ function set_f(t = false) {
   if (t) {
     set_f(true)
   }
-  fx = randnumber(0,6) 
+  fx = 3
   fy = 0
   fblock = tetrominoes[nxtt]
   b = randnumber(0,6)
@@ -212,9 +245,8 @@ function set_f(t = false) {
   }
   nxtt = b
   if (f_coll_g()) {
-    alert("You Died")
-    window.location.reload()
-    set_f(true)
+    running = false
+    you_died()
   }
 }
 function check_line() {
@@ -261,85 +293,89 @@ window.onload = function(){
     }
   }, 1)
   setInterval(function(){
-    mglt()
-    update_screen()
+    if (running) {
+      mglt()
+      update_screen()
+    }
   }, 500)
   document.addEventListener("keydown", function(event){
-    if (event.key == "ArrowLeft" || event.key == "a") {
-      fx -= 1
-      if (f_coll_g()) {
-        fx += 1
-      }
-    }
-    if (event.key == "ArrowRight" || event.key == "d") {
-      fx += 1
-      if (f_coll_g()) {
+    if (running) {
+      if (event.key == "ArrowLeft" || event.key == "a") {
         fx -= 1
+        if (f_coll_g()) {
+          fx += 1
+        }
       }
-    }
-    if (event.key == "ArrowDown" || event.key == "s") {
-      fy += 1
-      if (f_coll_g()) {
+      if (event.key == "ArrowRight" || event.key == "d") {
+        fx += 1
+        if (f_coll_g()) {
+          fx -= 1
+        }
+      }
+      if (event.key == "ArrowDown" || event.key == "s") {
+        fy += 1
+        if (f_coll_g()) {
+          fy -= 1
+          add_f_to_g()
+          set_f()
+        }
+      }
+      if (event.key == "ArrowUp" || event.key == "w") {
+        tf = false
+        while (!tf) {
+          fy += 1
+          if (f_coll_g()) {
+            tf = true
+          }
+        }
         fy -= 1
         add_f_to_g()
         set_f()
       }
-    }
-    if (event.key == "ArrowUp" || event.key == "w") {
-      tf = false
-      while (!tf) {
-        fy += 1
-        if (f_coll_g()) {
-          tf = true
-        }
-      }
-      fy -= 1
-      add_f_to_g()
-      set_f()
-    }
-    if (event.key == "x") {
-      r_c()
-      if (f_coll_g()) {
-        r_cc()
-      }
-    }
-    if (event.key == "z") {
-      r_cc()
-      if (f_coll_g()) {
+      if (event.key == "x") {
         r_c()
-      }
-    }
-    if (event.key == "q") {
-      i = 0
-      e = 0
-      while (i < 16) {
-        if (sblock[i] != 0) {
-          e += 1
+        if (f_coll_g()) {
+          r_cc()
         }
-        i++
       }
-      if (e == 0) {
-        sblock = fblock
-        set_f()
-        useswap = true
-      }
-    }
-    if (event.key == "e") {
-      i = 0
-      e = 0
-      while (i < 16) {
-        if (sblock[i] != 0) {
-          e += 1
+       if (event.key == "z") {
+        r_cc()
+        if (f_coll_g()) {
+          r_c()
         }
-        i++
       }
-      if (e != 0 && (!useswap)) {
-        tmp = sblock
-        sblock = fblock
-        fblock = tmp
-        useswap = true
+      if (event.key == "q") {
+        i = 0
+        e = 0
+        while (i < 16) {
+          if (sblock[i] != 0) {
+            e += 1
+          }
+          i++
+        }
+        if (e == 0) {
+          sblock = fblock
+          set_f()
+          useswap = true
+        }
       }
+      if (event.key == "e") {
+        i = 0
+        e = 0
+        while (i < 16) {
+          if (sblock[i] != 0) {
+            e += 1
+          }
+          i++
+        }
+        if (e != 0 && (!useswap)) {
+          tmp = sblock
+          sblock = fblock
+          fblock = tmp
+          useswap = true
+        }
+      }
+      update_screen()
     }
-    update_screen()
   })
 }
