@@ -39,16 +39,25 @@ button {
 }
 .nexttext {
   position: relative;
-  bottom: 285px;
+  bottom: 305px;
   left: 77px
 }
 .storetext {
   position: relative;
-  bottom: 470px;
+  bottom: 480px;
+  left: 77px
+}
+.linestext {
+  position: relative;
+  bottom: 275px;
+  left: 77px
+}
+.scoretext {
+  position: relative;
+  bottom: 300px;
   left: 77px
 }
 .homebutton {
-
   position: absolute;
   top: 10px;
   right: 10px;
@@ -56,11 +65,21 @@ button {
 }
 #next {
   position: relative;
-  bottom: 140px;
+  bottom: 160px;
   left: 12px
 }
 #store {
   position: relative;
-  bottom: 280px;
+  bottom: 290px;
   right: 87px
+}
+#lines {
+  position: relative;
+  bottom: 295px;
+  left: 77px
+}
+#score {
+  position: relative;
+  bottom: 320px;
+  left: 77px
 }

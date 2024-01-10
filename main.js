@@ -1,47 +1,11 @@
 var canvas = document.getElementById("game")
 var ctx = canvas.getContext("2d")
+ctx.globalAlpha = 1
 var canvas2 = document.getElementById("next")
 var ctx2 = canvas2.getContext("2d")
 var canvas3 = document.getElementById("store")
 var ctx3 = canvas3.getContext("2d")
 var defurl = 'https://coderpro1234-2.github.io'
-var fx = 0
-var fy = 0
-var nxtt = 0
-var musicplay = 0
-var timer = 0
-var useswap = false
-var running = true
-var instout = false
-const gblocks = [
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0
-]
-fblock = [
-0,0,0,0,
-0,0,0,0,
-0,0,0,0,
-0,0,0,0
-]
-sblock = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 const tetrominoes = [
   [0,5,0,0,0,5,0,0,0,5,0,0,0,5,0,0],
   [0,0,0,0,0,3,3,0,0,3,3,0,0,0,0,0],
@@ -51,10 +15,63 @@ const tetrominoes = [
   [0,0,0,0,0,0,6,0,0,0,6,0,0,6,6,0],
   [0,0,0,0,7,7,7,0,0,7,0,0,0,0,0,0]
 ]
+var fx = 0
+var fy = 0
+var nxtt = 0
+var musicplay = 0
+var timer = 0
+var lines = 0
+var score = 0
+var useswap = true
+var running = true
+var instout = true
+gblocks = []
+fblock = []
+sblock = []
+nxtt = 0
+function reset_vars() {
+  fx = 0
+  fy = 0
+  nxtt = 0
+  lines = 0
+  score = 0
+  useswap = false
+  running = true
+  instout = false
+  gblocks = [
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0
+  ]
+  fblock = [
+  0,0,0,0,
+  0,0,0,0,
+  0,0,0,0,
+  0,0,0,0
+  ]
+  sblock = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+  nxtt = randnumber(0,6)
+}
 function randnumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
-nxtt = randnumber(0,6)
 function checkmusic() {
   if (musicplay == 0) {
     tetrismusic.play()
@@ -143,6 +160,22 @@ function draw_store() {
     i ++
   }
 }
+function draw_ghost() {
+  o_fy = fy
+  i = 0
+  while (i != -1) {
+    fy=fy+1
+    if (f_coll_g()){
+      fy=fy-1
+      i = -2
+    }
+    i++
+  }
+  ctx.globalAlpha = 0.5
+  draw_fblock()
+  ctx.globalAlpha = 1
+  fy = o_fy
+}
 function g_xy(x, y) {
   if (y > 19 || x < 0 || x > 9) {
     return(1)
@@ -198,25 +231,54 @@ function sro(off, color) {
 function you_died() {
   c1 = 0
   c2 = 0
-  setInterval(function(){
-    sro(c1,c2+1)
-    c1 += 1
-    c2 += 1
-    c2 = c2 % 7
-    if (c1 == 20) {
-      c1 = 0
-      c2 = 0
-      setTimeout(function(){
-        window.location.reload()
-      set_f(true)
-      }, 400)
+  const deathinter = setInterval(function(){
+    if (running == false) {
+      sro(c1,c2+1)
+      c1 += 1
+      c2 += 1
+      c2 = c2 % 7
+      if (c1 == 20) {
+        c1 = 0
+        c2 = 0
+        setTimeout(function(){
+          reset_vars()
+          running = true
+          gblocks = [
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0
+          ]
+          set_f()
+          update_screen()
+        }, 400)
+      }
     }
-  },100)
-  
+    else {
+      clearInterval(deathinter)
+      return
+    }
+  },70)
 }
 function swapinst() {
   instout = !instout
-  txt = "Instrunctions:<br>Up Arrow / W to snap block to bottom.<br>Left or Right Arrows / A or D to move block left or right.<br>Down Arrow / S to move block one tile down.<br> X to rotate block clockwise.<br>Z to rotate block counter-clockwise.<br>Q to save block to store if it is empty.<br>E to swap block from store if it exists."
+  txt = "Instrunctions:<br>Up Arrow / W to snap block to bottom.<br>Left or Right Arrows / A or D to move block left or right.<br>Down Arrow / S to move block one tile down.<br> X to rotate block clockwise.<br>Z to rotate block counter-clockwise.<br>Q or E tp add or swap the block in the store."
   if (instout) {
     document.getElementById("instructions").innerHTML = txt
   }
@@ -261,6 +323,7 @@ function set_f(t = false) {
   }
 }
 function check_line() {
+  lcc = 0
   i = 0
   while (i < 20) {
     line = 0
@@ -272,18 +335,35 @@ function check_line() {
       i2 ++
     }
     if (line == 10) {
+      lines ++
+      lcc ++
       gblocks.splice(i*10, 10)
       gblocks.unshift(0,0,0,0,0,0,0,0,0,0)
     }
     i ++
   }
+  if (lcc == 1) {
+    score += 40
+  }
+  else if (lcc == 2) {
+    score += 100
+  }
+  else if (lcc == 3) {
+    score += 300
+  }
+  else if (lcc == 4) {
+    score += 1200
+  }
 }
 function update_screen() {
   check_line()
   draw_gblocks()
+  draw_ghost()
   draw_fblock()
   draw_next()
   draw_store()
+  document.getElementById("lines").innerHTML = (lines.toString()).padStart(6,"0")
+  document.getElementById("score").innerHTML = (score.toString()).padStart(6,"0")
 }
 function mglt() {
   fy += 1
@@ -293,7 +373,29 @@ function mglt() {
     set_f()
   }
 }
+function check_swap() {
+  i = 0
+  e = 0
+  while (i < 16) {
+    if (sblock[i] != 0) {
+      e += 1
+    }
+    i++
+  }
+  if (e == 0) {
+    sblock = fblock
+    set_f()
+    useswap = true
+  }
+  else if (e != 0 && (!useswap)) {
+    tmp = sblock
+    sblock = fblock
+    fblock = tmp
+    useswap = true
+  }
+}
 window.onload = function(){
+  reset_vars()
   set_f()
   update_screen()
   setInterval(function(){
@@ -355,36 +457,8 @@ window.onload = function(){
           r_c()
         }
       }
-      if (event.key == "q") {
-        i = 0
-        e = 0
-        while (i < 16) {
-          if (sblock[i] != 0) {
-            e += 1
-          }
-          i++
-        }
-        if (e == 0) {
-          sblock = fblock
-          set_f()
-          useswap = true
-        }
-      }
-      if (event.key == "e") {
-        i = 0
-        e = 0
-        while (i < 16) {
-          if (sblock[i] != 0) {
-            e += 1
-          }
-          i++
-        }
-        if (e != 0 && (!useswap)) {
-          tmp = sblock
-          sblock = fblock
-          fblock = tmp
-          useswap = true
-        }
+      if (event.key == "q" || event.key == "e" ) {
+        check_swap()
       }
       update_screen()
     }
